@@ -82,7 +82,12 @@ def cmd_run(cfg: ArenaConfig, args: argparse.Namespace) -> None:
         if not args.yes and input("Proceed? [y/N] ").strip().lower() != "y":
             sys.exit("cancelled")
     budget = TokenBudget(cfg.budget_tokens)
-    finished = asyncio.run(run_matrix(scns, defenses, cfg, mode, run_id, budget))
+    try:
+        finished = asyncio.run(run_matrix(scns, defenses, cfg, mode, run_id, budget))
+    except Exception as e:  # a bad key fails on the first call; say so instead of a traceback
+        if type(e).__name__ != "AuthenticationError":
+            raise
+        sys.exit("The API rejected ANTHROPIC_API_KEY (401). Check the key in this window; nothing was charged.")
     if not finished:
         console.print(f"[yellow]Token budget used up ({budget.used:,}); resume with --run-id {run_id}[/]")
     console.print(f"run {run_id} done ({mode}); tokens used {budget.used:,}")
