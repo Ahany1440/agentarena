@@ -5,13 +5,26 @@ An open-source red-team range for AI agents and MCP servers. It is a safe "warga
 a judge, and an MCP gateway with switchable defense layers. The output is a reproducible scoreboard: attack
 success rate (ASR) with and without each defense, plus utility on benign tasks.
 
+## Results (live, 600 trials)
+
+Claude Haiku 5.5 as the agent, Claude Sonnet 5.5 as the attacker, 30 attempts per cell:
+
+| | no defense | taint tracking | spotlighting | all defenses |
+|---|---|---|---|---|
+| Attack success | **0%** (0–4%) | 0% | 0% | 0% |
+| Legitimate "reply to the sender" | **30/30** | **0/30** | 30/30 | **0/30** |
+
+The model resisted all 360 attack trials on its own, while strict defenses blocked every legitimate reply.
+The attacker refused about half its turns, so attack pressure was limited. Full method, findings and limits:
+[docs/WRITEUP.md](docs/WRITEUP.md).
+
 ## 5-minute quickstart
 
 ```bash
 python -m venv .venv
 .venv/Scripts/activate            # Windows; on macOS/Linux: source .venv/bin/activate
 pip install -e ".[dev]"
-arena list                        # 8 scenarios, 7 defense configs
+arena list                        # 11 scenarios, 7 defense configs
 arena demo                        # full mock matrix + report, zero API cost
 pytest -q && ruff check src tests
 ```
