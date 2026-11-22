@@ -7,6 +7,7 @@ name = "agentarena"
 version = "0.1.0"
 description = "Open-source red-team range for AI agents and MCP servers (fake targets only)"
 requires-python = ">=3.11"
+license = "MIT"
 dependencies = ["mcp>=2.3,<3", "pydantic>=2", "pyyaml>=6", "rich>=13"]
 
 [project.optional-dependencies]

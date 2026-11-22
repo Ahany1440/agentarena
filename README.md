@@ -82,3 +82,7 @@ appended to `runs/payloads.jsonl` (a regression set).
 AgentArena attacks **only its own local fake agents and fake data**. It does not scan, target or connect to real
 systems, and it ships no exploit code for real products: payloads are generic text patterns tested only on this
 range. Secrets are random canary strings. Do not point it at systems you do not own. See [SECURITY.md](SECURITY.md).
+
+## License
+
+MIT. See [LICENSE](LICENSE).
