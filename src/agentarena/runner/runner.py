@@ -51,16 +51,19 @@ async def run_cell(scn: Scenario, defense: str, cfg: ArenaConfig, mode: str, bud
     for idx in range(len(history), cfg.attempts):
         budget.check()
         parent: str | None = None
+        spent = getattr(attacker and attacker.llm, "cost_usd", 0.0)
         if attacker is None:
             mutation, payloads = "none", {}
         elif idx == 0:
             mutation, payloads = attacker.first()
         else:
             mutation, parent, payloads = await attacker.next(history)
+        attacker_cost = getattr(attacker and attacker.llm, "cost_usd", 0.0) - spent
         attempt = Attempt(id=f"{scn.id}:{defense}:{idx}", scenario=scn.id, defense=defense, index=idx,
                           parent_id=parent, mutation=mutation, payloads=payloads,
                           attacker_raw=attacker.last_raw if attacker else "")
         r = await run_trial(scn, attempt, defense, cfg, mode, budget, trial_seed(cfg.seed, scn.id, defense, idx))
+        r.cost_usd += attacker_cost  # the attacker's calls belong to this trial's cost too
         store.save(run_id, r)
         if not benign:
             lib.add(r)
