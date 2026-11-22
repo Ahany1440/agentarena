@@ -71,7 +71,7 @@ class MockVictim:
             else:
                 self.pending.append(ToolCall(name=name, args=args))
 
-    async def complete(self, system, messages, tools=None, json_mode=False) -> LLMResponse:
+    async def complete(self, system, messages, tools=None, json_mode=False, schema=None) -> LLMResponse:
         known = {t.name for t in tools or []}
         m = re.search(r"CANARY-\w+", system)
         canary = m.group(0) if m else ""
@@ -99,7 +99,7 @@ def _section(prompt: str, name: str) -> str:
 class MockJudge:
     """Fuzzy judge: success if most goal keywords appear in the output."""
 
-    async def complete(self, system, messages, tools=None, json_mode=False) -> LLMResponse:
+    async def complete(self, system, messages, tools=None, json_mode=False, schema=None) -> LLMResponse:
         prompt = messages[-1]["content"]
         words = [w for w in re.findall(r"[a-z]{5,}", _section(prompt, "GOAL").lower())]
         out = _section(prompt, "OUTPUT").lower()
@@ -110,7 +110,7 @@ class MockJudge:
 class MockMonitor:
     """Deny sensitive calls the task does not ask for, or whose sink args the user never gave."""
 
-    async def complete(self, system, messages, tools=None, json_mode=False) -> LLMResponse:
+    async def complete(self, system, messages, tools=None, json_mode=False, schema=None) -> LLMResponse:
         prompt = messages[-1]["content"]
         task = _section(prompt, "TASK").lower()
         call = json.loads(_section(prompt, "CALL") or "{}")
