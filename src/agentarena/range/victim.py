@@ -27,11 +27,13 @@ class Victim:
             if not r.tool_calls:
                 t.final_output = r.text
                 return t
-            blocks: list[dict] = [{"type": "text", "text": r.text}] if r.text else []
+            live = r.raw is not None
+            blocks: list[dict] = list(r.raw or []) if live else ([{"type": "text", "text": r.text}] if r.text else [])
             results = []
             for i, call in enumerate(r.tool_calls):
-                cid = f"t{step}_{i}"
-                blocks.append({"type": "tool_use", "id": cid, "name": call.name, "input": call.args})
+                cid = r.tool_ids[i] if live else f"t{step}_{i}"
+                if not live:
+                    blocks.append({"type": "tool_use", "id": cid, "name": call.name, "input": call.args})
                 rec = await self.gateway.call(call)
                 t.calls.append(rec)
                 results.append({"type": "tool_result", "tool_use_id": cid, "content": rec.result})

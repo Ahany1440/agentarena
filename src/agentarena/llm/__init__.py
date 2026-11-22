@@ -22,4 +22,5 @@ def get_backend(mode: str, role: Role, cfg: ArenaConfig, budget: TokenBudget,
     from agentarena.llm.live import AnthropicLLM
 
     model = {"victim": cfg.victim_model, "attacker": cfg.attacker_model}.get(role, cfg.judge_model)
-    return AnthropicLLM(model, budget)
+    # victim keeps the model's default effort (realistic); judge and monitor are simple yes/no calls
+    return AnthropicLLM(model, budget, effort="low" if role in ("judge", "monitor") else None)

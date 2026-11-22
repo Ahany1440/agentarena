@@ -109,6 +109,7 @@ class Attempt(BaseModel):
     parent_id: str | None = None
     mutation: str
     payloads: dict[str, str] = Field(default_factory=dict)
+    attacker_raw: str = ""  # live attacker's raw reply, kept so refusals and bad replies can be inspected
 
 
 class Verdict(BaseModel):

@@ -16,6 +16,9 @@ class BudgetExceeded(RuntimeError):
 class LLMResponse(BaseModel):
     text: str = ""
     tool_calls: list[ToolCall] = Field(default_factory=list)
+    tool_ids: list[str] = Field(default_factory=list)  # live only: API tool_use ids
+    raw: list[dict] | None = None  # live only: assistant content blocks to send back as-is
+    stop_reason: str = ""  # live only: e.g. "end_turn", "tool_use", "refusal"
     tokens_in: int = 0
     tokens_out: int = 0
     cost_usd: float = 0.0
@@ -23,7 +26,8 @@ class LLMResponse(BaseModel):
 
 class LLM(Protocol):
     async def complete(
-        self, system: str, messages: list[dict], tools: list[ToolSpec] | None = None, json_mode: bool = False
+        self, system: str, messages: list[dict], tools: list[ToolSpec] | None = None, json_mode: bool = False,
+        schema: dict | None = None,  # live only: JSON schema the reply must follow (structured outputs)
     ) -> LLMResponse: ...
 
 

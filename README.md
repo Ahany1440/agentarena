@@ -61,7 +61,8 @@ appended to `runs/payloads.jsonl` (a regression set).
 - No defense knows the canary format. Taint tracking and the monitor only look at where a sink value came from,
   which is why they also block some legitimate actions (see utility).
 - The servers run in-process, not as separate stdio processes.
-- The live backend (`llm/live.py`) is part of Phase 5 and is not built yet.
+- Live mode (`llm/live.py`) uses Claude Haiku 5.5 as victim and judge and Claude Sonnet 5.5 as attacker (with
+  server-side refusal fallback). Every live call is capped by `--budget-tokens`; cost is tracked per trial.
 
 ## Ethical use
 

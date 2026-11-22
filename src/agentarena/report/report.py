@@ -135,7 +135,8 @@ HTML = """<!doctype html><html lang="en"><head><meta charset="utf-8">
 @media (prefers-color-scheme:dark){:root{--bg:#1c1917;--fg:#f5f5f4;--muted:#a8a29e;--line:#44403c;
 --asr:#fb923c;--util:#2dd4bf}}
 body{background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,sans-serif;margin:0;padding:24px 16px}
-main{max-width:960px;margin:auto}h1{margin:0 0 4px}.mode{color:var(--muted);margin-bottom:24px}
+main{max-width:960px;margin:auto}h1{margin:0 0 4px;font-size:2.25rem;line-height:1.1}
+h2{font-size:1.4rem;margin:32px 0 8px}h3{font-size:1.05rem}.mode{color:var(--muted);margin-bottom:24px}
 .scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;margin:8px 0 24px;font-variant-numeric:tabular-nums}
 th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:right}
 th:first-child,td:first-child{text-align:left}

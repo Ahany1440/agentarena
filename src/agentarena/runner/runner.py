@@ -58,7 +58,8 @@ async def run_cell(scn: Scenario, defense: str, cfg: ArenaConfig, mode: str, bud
         else:
             mutation, parent, payloads = await attacker.next(history)
         attempt = Attempt(id=f"{scn.id}:{defense}:{idx}", scenario=scn.id, defense=defense, index=idx,
-                          parent_id=parent, mutation=mutation, payloads=payloads)
+                          parent_id=parent, mutation=mutation, payloads=payloads,
+                          attacker_raw=attacker.last_raw if attacker else "")
         r = await run_trial(scn, attempt, defense, cfg, mode, budget, trial_seed(cfg.seed, scn.id, defense, idx))
         store.save(run_id, r)
         if not benign:
