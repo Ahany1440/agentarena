@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentarena"
+version = "0.1.0"
+description = "Open-source red-team range for AI agents and MCP servers (fake targets only)"
+requires-python = ">=3.11"
+dependencies = ["mcp>=2.3,<3", "pydantic>=2", "pyyaml>=6", "rich>=13"]
+
+[project.optional-dependencies]
+live = ["anthropic>=0.40"]
+dev = ["pytest>=8", "ruff>=0.6", "anthropic>=0.40"]
+
+[project.scripts]
+arena = "agentarena.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+agentarena = ["range/scenarios/*.yaml", "judge/*.jsonl"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

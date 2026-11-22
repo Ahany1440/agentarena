@@ -1,0 +1,12 @@
+# AgentArena defaults. CLI flags override these.
+victim_model: claude-haiku-5-5
+attacker_model: claude-sonnet-5-5
+judge_model: claude-haiku-5-5
+attempts: 30
+concurrency: 4
+budget_tokens: 300000
+db_path: runs/arena.db
+payloads_path: runs/payloads.jsonl
+report_dir: report
+seed: 1337
+defenses: [none, scanner, taint, allowlist, spotlight, monitor, all]
